@@ -2,9 +2,7 @@ package com.company;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
@@ -26,7 +24,11 @@ public class Main {
                 "switch", "synchronized", "this", "throw", "throws", "transient", "try", "void", "volatile", "while",
                 "true", "false", "null" };
         HashSet<String> hashSet = new HashSet<>(Arrays.asList(keywordString));
+        Map<String, Integer> map = new HashMap<>();
 
+        for(String s: keywordString){
+            map.put(s, 0);
+        }
         int c = 0;
         Scanner in = new Scanner(file);
         while(in.hasNext()){
@@ -48,6 +50,7 @@ public class Main {
                     for(String word: arr){
                         if(hashSet.contains(word)) {
                             ++c;
+                            map.put(word, map.get(word) + 1);
                         }
                     }
                     currPos = quotePos + 1;
@@ -62,5 +65,20 @@ public class Main {
             }
         }
         System.out.println(c);
+        List<Map.Entry> sortedMap = new LinkedList<>(map.entrySet());
+
+        sortedMap.sort((o1, o2) -> {
+            int cmp0 = ((Integer) o1.getValue()).compareTo((Integer) o2.getValue());
+            if (cmp0 == 0) {
+                return ((String) o1.getKey()).compareTo((String) o2.getKey());
+            }
+            return -cmp0;
+        });
+
+        for(Map.Entry entry: sortedMap){
+            System.out.println(entry.getKey() + " " + entry.getValue());
+        }
+
+
     }
 }
